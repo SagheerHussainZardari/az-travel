@@ -1,0 +1,36 @@
+composer require litespeed/lscache-laravel
+
+in /config/app.php
+
+'aliases' => [
+    ...
+    'LSCache'   => Litespeed\LSCache\LSCache::class,
+],
+
+in app/Http/Kernel.php
+
+protected $middleware = [
+    ...
+    \Litespeed\LSCache\LSCacheMiddleware::class,
+    \Litespeed\LSCache\LSTagsMiddleware::class,
+];
+
+protected $routeMiddleware = [
+    ...
+    'lscache' => \Litespeed\LSCache\LSCacheMiddleware::class,
+    'lstags' => \Litespeed\LSCache\LSTagsMiddleware::class,
+];
+
+
+Copy lscache.php to config/:
+
+Copy the package config/lscache.php file to your config/ directory.
+
+php artisan vendor:publish --provider="Litespeed\LSCache\LSCacheServiceProvider"
+
+
+in .htaccess 
+
+<IfModule LiteSpeed>
+   CacheLookup on
+</IfModule>
